@@ -1,8 +1,10 @@
 defmodule FizzBuzz do
   def print() do
-    list = _downto(100, [])
+    list = generate_list()
     Enum.map list, fn (value) -> IO.puts(value) end
   end
+
+  def generate_list(), do: _downto(100, [])
 
   defp _downto(0, result), do: result
   defp _downto(current, result) do
