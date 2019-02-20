@@ -29,4 +29,10 @@ defmodule FizzBuzzTest do
   test "3と5で割り切れる場合はFizzBuzzを返す" do
     assert FizzBuzz.generate(15) == "FizzBuzz"
   end
+
+  test "数字以外の場合は例外を発生させる" do
+    assert_raise RuntimeError, fn  ->
+      FizzBuzz.generate('a')
+    end
+  end
 end
