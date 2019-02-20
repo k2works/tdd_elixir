@@ -1,5 +1,5 @@
 defmodule FizzBuzz do
-  def greeting do
-    "Hello, world!"
+  def print do
+    IO.puts(1)
   end
 end
