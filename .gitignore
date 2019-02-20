@@ -25,3 +25,4 @@ tdd_elixir-*.tar
 .idea
 .elixir_ls
 .vscode
+tdd_elixir.iml
