@@ -15,5 +15,6 @@ defmodule FizzBuzzTest do
 
   test "3で割り切れる場合はFizzを返す" do
     assert FizzBuzz.generate(3) == "Fizz"
+    assert FizzBuzz.generate(1) == 1
   end
 end
