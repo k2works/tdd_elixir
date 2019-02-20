@@ -1,12 +1,6 @@
 defmodule FizzBuzz do
-  def print do
-    print(100, [])
-  end
-
-  def print(0, result) do
-    result
-  end
-
+  def print, do: print(100, [])
+  def print(0, result), do: result
   def print(current, result) do
     value = generate(current)
     IO.puts(value)
