@@ -13,12 +13,10 @@ defmodule FizzBuzz do
   end
 
   def generate(number) do
-    result = number
     if rem(number, 3) == 0 do
-      result = "Fizz"
+      "Fizz"
     else
-      result = number
+      number
     end
-    result
   end
 end
