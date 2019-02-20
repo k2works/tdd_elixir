@@ -8,7 +8,7 @@ defmodule FizzBuzzTest do
   doctest FizzBuzz
 
   test "1から100までの数をプリントする,ただし3で割り切れる場合はFizz,5で割り切れる場合はBuzz,両方で割り切れる場合はFizzBuzzをプリントする" do
-    list = FizzBuzz.generate_list()
+    list = FizzBuzz.generate_list(100)
     assert List.first(list) == 1
     assert Enum.at(list, 2) == "Fizz"
     assert Enum.at(list, 4) == "Buzz"
