@@ -8,6 +8,8 @@ defmodule FizzBuzzTest do
   doctest FizzBuzz
 
   test "1から100までの数をプリントする" do
-    FizzBuzz.print()
+    list = FizzBuzz.print()
+    assert List.first(list) == 1
+    assert List.last(list) == 100
   end
 end
