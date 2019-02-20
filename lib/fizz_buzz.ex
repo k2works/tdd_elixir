@@ -4,12 +4,9 @@ defmodule FizzBuzz do
     Enum.map list, fn (value) -> IO.puts(value) end
   end
 
-  def generate_list(), do: _downto(100, [])
-
-  defp _downto(0, result), do: result
-  defp _downto(current, result) do
-    value = generate(current)
-    _downto(current - 1, [ value | result] )
+  def generate_list() do
+    range = 1..100
+    Enum.map range, fn (number) -> generate(number) end
   end
 
   def generate(number) do
