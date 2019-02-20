@@ -23,3 +23,6 @@
 - [elixir](https://elixir-lang.org/)
 - [プログラミングElixir](https://www.amazon.co.jp/dp/B01KFCXP04/ref=dp-kindle-redirect?_encoding=UTF8&btkr=1)
 - [FizzBuzz in Elixir](https://sublimecoding.com/fizzbuzz-in-elixir/)
+- [Typespecs](https://hexdocs.pm/elixir/typespecs.html)
+- [map と collect、reduce と inject ―― 名前の違いに見る発想の違い](https://magazine.rubyist.net/articles/0038/0038-MapAndCollect.html#fnref:5)
+- [AWS Lambda Elixir Runtime](https://github.com/aws-samples/aws-lambda-elixir-runtime)
