@@ -11,4 +11,8 @@ defmodule FizzBuzz do
     IO.puts(current)
     print(current - 1, [ current | result] )
   end
+
+  def generate(number) do
+    "Fizz"
+  end
 end

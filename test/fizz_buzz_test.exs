@@ -12,4 +12,8 @@ defmodule FizzBuzzTest do
     assert List.first(list) == 1
     assert List.last(list) == 100
   end
+
+  test "3で割り切れる場合はFizzを返す" do
+    assert FizzBuzz.generate(3) == "Fizz"
+  end
 end
