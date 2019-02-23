@@ -2,7 +2,8 @@ defmodule FizzBuzzTest do
   @moduledoc false
 
   use ExUnit.Case
-  doctest FizzBuzz
+  alias TddElixir.FizzBuzz, as: FizzBuzz
+  doctest TddElixir.FizzBuzz
 
   test "1から100までの数をプリントする,ただし3で割り切れる場合はFizz,5で割り切れる場合はBuzz,両方で割り切れる場合はFizzBuzzをプリントする" do
     list = FizzBuzz.generate_list(100)
@@ -11,7 +12,6 @@ defmodule FizzBuzzTest do
     assert Enum.at(list, 4) == "Buzz"
     assert Enum.at(list, 14) == "FizzBuzz"
     assert List.last(list) == "Buzz"
-    FizzBuzz.print()
   end
 
   test "3で割り切れる場合はFizzを返す" do

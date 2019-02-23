@@ -1,4 +1,4 @@
-defmodule FizzBuzz do
+defmodule TddElixir.FizzBuzz do
   @max_range 100
   @moduledoc false
   def print, do: generate_list(@max_range) |> Enum.map(&IO.puts/1)
