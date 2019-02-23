@@ -811,22 +811,6 @@ def generate(number):
 複数行に渡るときには do..end 形式を使う
 
 ```elixir
-  def print do
-    print(100, [])
-  end
-
-  def print(0, result) do
-    result
-  end
-
-  def print(current, result) do
-    value = generate(current)
-    IO.puts(value)
-    print(current - 1, [ value | result] )
-  end
-```
-
-```elixir
   def print, do: print(100, [])
   def print(0, result), do: result
 
@@ -875,6 +859,29 @@ Randomized with seed 474353
   end
 ```
 
+---
+
+### Chage Function Declaration
+
+関数名を変更する
+
+```elixir
+  def print, do: downto(100, [])
+
+  def downto(0, result), do: result
+  def downto(current, result) do
+    value = generate(current)
+    IO.puts(value)
+    downto(current - 1, [ value | result] )
+  end
+```
+
+---
+
+### Hide Delegate
+
+`downto`関数は公開すべきではない
+
 ```elixir
   def print, do: downto(100, [])
 
@@ -893,15 +900,21 @@ Randomized with seed 474353
 プライベート関数
 
 ```elixir
-  def print, do: downto(100, [])
+  def print, do: _downto(100, [])
 
-  def downto(0, result), do: result
-  def downto(current, result) do
+  defp _downto(0, result), do: result
+  defp _downto(current, result) do
     value = generate(current)
     IO.puts(value)
-    downto(current - 1, [ value | result] )
+    _downto(current - 1, [ value | result] )
   end
 ```
+
+---
+
+### Pull Up Method
+
+`IO.puts`が`_downto`で呼び出されている
 
 ```elixir
   def print, do: _downto(100, [])
@@ -919,17 +932,6 @@ Randomized with seed 474353
 ### Pull Up Method
 
 `IO.puts`は`print`で呼び出す
-
-```elixir
-  def print, do: _downto(100, [])
-
-  defp _downto(0, result), do: result
-  defp _downto(current, result) do
-    value = generate(current)
-    IO.puts(value)
-    _downto(current - 1, [ value | result] )
-  end
-```
 
 ```elixir
   def print() do
@@ -963,6 +965,12 @@ Randomized with seed 474353
   end
 ```
 
+---
+
+### Extract Function
+
+`generate_linst`関数を抽出する
+
 ```elixir
   def print() do
     list = generate_list()
@@ -982,7 +990,7 @@ Randomized with seed 474353
 
 ### Replace Loop with Pipeline
 
-より関数型チックに
+`_downto`の繰り返しをなんとかしたい
 
 ```elixir
   def print() do
@@ -998,6 +1006,12 @@ Randomized with seed 474353
     _downto(current - 1, [ value | result] )
   end
 ```
+
+---
+
+### Replace Loop with Pipeline
+
+ループからパイプラインに
 
 ```elixir
   def print() do
@@ -1029,6 +1043,12 @@ Randomized with seed 474353
   end
 ```
 
+---
+
+### Inline Variable
+
+do:表記でスッキリ
+
 ```elixir
  def print(), do: Enum.map generate_list(), fn (value) -> IO.puts(value) end
 
@@ -1042,12 +1062,6 @@ Randomized with seed 474353
 &記法
 
 ```elixir
- def print(), do: Enum.map generate_list(), fn (value) -> IO.puts(value) end
-
- def generate_list(), do: Enum.map 1..100, fn (number) -> generate(number) end
-```
-
-```elixir
   def print(), do: Enum.map generate_list(), &IO.puts/1
 
   def generate_list(), do: Enum.map 1..100, &generate/1
@@ -1058,12 +1072,6 @@ Randomized with seed 474353
 ### Inline Variable
 
 パイプ演算子
-
-```elixir
-  def print(), do: Enum.map generate_list(), &IO.puts/1
-
-  def generate_list(), do: Enum.map 1..100, &generate/1
-```
 
 ```elixir
   def print(), do: generate_list() |> Enum.map &IO.puts/1
@@ -1083,6 +1091,12 @@ Randomized with seed 474353
   def generate_list(), do: 1..100 |> Enum.map &generate/1
 ```
 
+---
+
+### Extract Parameter
+
+引数パラメータを抽出する
+
 ```elixir
   def print(), do: generate_list(100) |> Enum.map &IO.puts/1
 
@@ -1100,6 +1114,12 @@ Randomized with seed 474353
 
   def generate_list(max_range), do: 1..max_range |> Enum.map &generate/1
 ```
+
+---
+
+### Replace Magic Number with Symbolic Constant
+
+モジュールの属性は Ruby や Java の定数
 
 ```elixir
   @max_range 100
@@ -1128,6 +1148,12 @@ Randomized with seed 474353
   end
 ```
 
+---
+
+### Extract Variable
+
+説明変数を抽出する
+
 ```elixir
   def generate(number) do
     fizz = rem(number, 3) == 0
@@ -1146,7 +1172,7 @@ Randomized with seed 474353
 
 ### Extract Function
 
-問い合わせ関数を抽出して
+変数にバインドしている内容だけど
 
 ```elixir
   def generate(number) do
@@ -1161,6 +1187,12 @@ Randomized with seed 474353
     end
   end
 ```
+
+---
+
+### Extract Function
+
+問い合わせ関数にして
 
 ```elixir
  def generate(number) do
@@ -1186,14 +1218,11 @@ Randomized with seed 474353
 一時変数をインライン化したら出来上がり
 
 ```elixir
- def generate(number) do
-    fizz = _fizz?(number)
-    buzz = _buzz?(number)
-
+  def generate(number) do
     cond do
-      fizz and buzz -> "FizzBuzz"
-      fizz -> "Fizz"
-      buzz -> "Buzz"
+      _fizz?(number) and _buzz?(number) -> "FizzBuzz"
+      _fizz?(number) -> "Fizz"
+      _buzz?(number) -> "Buzz"
       true -> number
     end
   end
@@ -1201,6 +1230,12 @@ Randomized with seed 474353
   defp _fizz?(number), do: rem(number, 3) == 0
   defp _buzz?(number), do: rem(number, 5) == 0
 ```
+
+---
+
+### Substitue Argolrith
+
+`cond`節だけど
 
 ```elixir
   def generate(number) do
@@ -1224,17 +1259,23 @@ Elixir の`case`を試してみる
 
 ```elixir
   def generate(number) do
-    cond do
-      _fizz?(number) and _buzz?(number) -> "FizzBuzz"
-      _fizz?(number) -> "Fizz"
-      _buzz?(number) -> "Buzz"
-      true -> number
+    case {_fizz?(number), _buzz?(number)} do
+      {0, 0} -> "FizzBuzz"
+      {0, _} -> "Fizz"
+      {_, 0} -> "Buzz"
+      {_, _} -> number
     end
   end
 
-  defp _fizz?(number), do: rem(number, 3) == 0
-  defp _buzz?(number), do: rem(number, 5) == 0
+  defp _fizz?(number), do: rem(number, 3)
+  defp _buzz?(number), do: rem(number, 5)
 ```
+
+---
+
+### Replace Nested Conditional with Guard Clauses
+
+もう少し可読性をあげたいな
 
 ```elixir
   def generate(number) do
@@ -1257,20 +1298,6 @@ Elixir の`case`を試してみる
 ガード節に変更
 
 ```elixir
-  def generate(number) do
-    case {_fizz?(number), _buzz?(number)} do
-      {0, 0} -> "FizzBuzz"
-      {0, _} -> "Fizz"
-      {_, 0} -> "Buzz"
-      {_, _} -> number
-    end
-  end
-
-  defp _fizz?(number), do: rem(number, 3)
-  defp _buzz?(number), do: rem(number, 5)
-```
-
-```elixir
   def generate(number) when rem(number, 3) == 0 and rem(number, 5) == 0, do: "FizzBuzz"
   def generate(number) when rem(number, 3) == 0 , do: "Fizz"
   def generate(number) when rem(number, 5) == 0 , do: "Buzz"
@@ -1289,6 +1316,12 @@ Elixir の`case`を試してみる
   def generate(number) when rem(number, 5) == 0 , do: "Buzz"
   def generate(number), do: number
 ```
+
+---
+
+### Replace Magic Number with Symbolic Constant
+
+他の関数でも使うかもしれないので
 
 ```elixir
   @fizz_buzz "FizzBuzz"
@@ -1310,7 +1343,6 @@ end
 
 ```elixir
 defmodule TddElixir.FizzBuzz do
-  @moduledoc false
   @max_range 100
   def print, do: generate_list(@max_range) |> Enum.map(&IO.puts/1)
   def generate_list(max_range), do: 1..max_range |> Enum.map(&generate/1)
@@ -1473,7 +1505,6 @@ class FizzBuzz:
 
 ```elixir
 defmodule TddElixir.FizzBuzz do
-  @moduledoc false
   @max_range 100
   def print, do: generate_list(@max_range) |> Enum.map(&IO.puts/1)
   def generate_list(max_range), do: 1..max_range |> Enum.map(&generate/1)
