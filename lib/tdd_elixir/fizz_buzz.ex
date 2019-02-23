@@ -1,7 +1,6 @@
 defmodule FizzBuzz do
   @moduledoc false
-
-  def greeting do
-    "Hello, world!"
+  def print do
+    IO.puts(1)
   end
 end

@@ -4,7 +4,7 @@ defmodule FizzBuzzTest do
   use ExUnit.Case
   doctest FizzBuzz
 
-  test "Hello, world!" do
-    assert FizzBuzz.greeting() == "Hello, world!"
+  test "1から100までの数をプリントする" do
+    FizzBuzz.print()
   end
 end
