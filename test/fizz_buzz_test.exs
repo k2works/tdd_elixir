@@ -1,4 +1,3 @@
-
 defmodule FizzBuzzTest do
   @moduledoc false
 
