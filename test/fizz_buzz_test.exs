@@ -18,4 +18,8 @@ defmodule FizzBuzzTest do
   test "5で割り切れる場合はBuzzを返す" do
     assert FizzBuzz.generate(5) == "Buzz"
   end
+
+  test "3と5で割り切れる場合はFizzBuzzを返す" do
+    assert FizzBuzz.generate(15) == "FizzBuzz"
+  end
 end
