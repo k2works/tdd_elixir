@@ -530,7 +530,7 @@ def generate(number):
 
 ### 5 で割り切れる場合は Buzz を返す
 
-Elixirでは・・・とりあえずこんな感じで
+Elixir では・・・とりあえずこんな感じで
 
 ```elixir
   def generate(number) do
@@ -565,7 +565,7 @@ Randomized with seed 600908
 
 ---
 
-### TODOリスト
+### TODO リスト
 
 - ~~1 から 100 まで数をプリントできるようにする。~~
 - ~~3 の倍数のときは数の代わりに｢Fizz｣をプリントできるようにする。~~
@@ -620,7 +620,7 @@ Randomized with seed 600908
 
 ---
 
-### TODOリスト
+### TODO リスト
 
 - ~~1 から 100 まで数をプリントできるようにする。~~
 - ~~3 の倍数のときは数の代わりに｢Fizz｣をプリントできるようにする。~~
@@ -631,7 +631,7 @@ Randomized with seed 600908
 
 ### FizzBuzz
 
-1から100までをプリントするのではなく・・・
+1 から 100 までをプリントするのではなく・・・
 
 ```elixir
  test "1から100までの数をプリントする,ただし3で割り切れる場合はFizz,5で割り切れる場合はBuzz,両方で割り切れる場合はFizzBuzzをプリントする" do
@@ -647,6 +647,8 @@ Randomized with seed 600908
 ---
 
 ### FizzBuzz
+
+`generate`関数を呼び出すようにする
 
 ```elixir
   def print do
@@ -782,6 +784,8 @@ def generate(number):
 
 ### リファクタリング
 
+まずは`print`関数から
+
 ```elixir
   def print do
     print(100, [])
@@ -802,11 +806,30 @@ def generate(number):
 
 ### リファクタリング
 
-一行のブロックのときには do:形式、複数行に渡るときには do..end 形式を使う
+一行のブロックのときには do:形式
+
+複数行に渡るときには do..end 形式を使う
+
+```elixir
+  def print do
+    print(100, [])
+  end
+
+  def print(0, result) do
+    result
+  end
+
+  def print(current, result) do
+    value = generate(current)
+    IO.puts(value)
+    print(current - 1, [ value | result] )
+  end
+```
 
 ```elixir
   def print, do: print(100, [])
   def print(0, result), do: result
+
   def print(current, result) do
     value = generate(current)
     IO.puts(value)
@@ -842,6 +865,17 @@ Randomized with seed 474353
 名前が処理をうまく表せていない
 
 ```elixir
+  def print, do: print(100, [])
+  def print(0, result), do: result
+
+  def print(current, result) do
+    value = generate(current)
+    IO.puts(value)
+    print(current - 1, [ value | result] )
+  end
+```
+
+```elixir
   def print, do: downto(100, [])
 
   def downto(0, result), do: result
@@ -857,6 +891,17 @@ Randomized with seed 474353
 ### Hide Delegate
 
 プライベート関数
+
+```elixir
+  def print, do: downto(100, [])
+
+  def downto(0, result), do: result
+  def downto(current, result) do
+    value = generate(current)
+    IO.puts(value)
+    downto(current - 1, [ value | result] )
+  end
+```
 
 ```elixir
   def print, do: _downto(100, [])
@@ -876,6 +921,17 @@ Randomized with seed 474353
 `IO.puts`は`print`で呼び出す
 
 ```elixir
+  def print, do: _downto(100, [])
+
+  defp _downto(0, result), do: result
+  defp _downto(current, result) do
+    value = generate(current)
+    IO.puts(value)
+    _downto(current - 1, [ value | result] )
+  end
+```
+
+```elixir
   def print() do
     list = _downto(100, [])
     Enum.map list, fn (value) -> IO.puts(value) end
@@ -886,7 +942,6 @@ Randomized with seed 474353
     value = generate(current)
     _downto(current - 1, [ value | result] )
   end
-
 ```
 
 ---
@@ -894,6 +949,19 @@ Randomized with seed 474353
 ### Extract Function
 
 `_downto`はリストを生成しているので
+
+```elixir
+  def print() do
+    list = _downto(100, [])
+    Enum.map list, fn (value) -> IO.puts(value) end
+  end
+
+  defp _downto(0, result), do: result
+  defp _downto(current, result) do
+    value = generate(current)
+    _downto(current - 1, [ value | result] )
+  end
+```
 
 ```elixir
   def print() do
@@ -922,6 +990,21 @@ Randomized with seed 474353
     Enum.map list, fn (value) -> IO.puts(value) end
   end
 
+  def generate_list(), do: _downto(100, [])
+
+  defp _downto(0, result), do: result
+  defp _downto(current, result) do
+    value = generate(current)
+    _downto(current - 1, [ value | result] )
+  end
+```
+
+```elixir
+  def print() do
+    list = generate_list()
+    Enum.map list, fn (value) -> IO.puts(value) end
+  end
+
   def generate_list() do
     range = 1..100
     Enum.map range, fn (number) -> generate(number) end
@@ -935,10 +1018,21 @@ Randomized with seed 474353
 説明変数いらない
 
 ```elixir
+  def print() do
+    list = generate_list()
+    Enum.map list, fn (value) -> IO.puts(value) end
+  end
+
+  def generate_list() do
+    range = 1..100
+    Enum.map range, fn (number) -> generate(number) end
+  end
+```
+
+```elixir
  def print(), do: Enum.map generate_list(), fn (value) -> IO.puts(value) end
 
  def generate_list(), do: Enum.map 1..100, fn (number) -> generate(number) end
-
 ```
 
 ---
@@ -946,6 +1040,12 @@ Randomized with seed 474353
 ### Inline Variable
 
 &記法
+
+```elixir
+ def print(), do: Enum.map generate_list(), fn (value) -> IO.puts(value) end
+
+ def generate_list(), do: Enum.map 1..100, fn (number) -> generate(number) end
+```
 
 ```elixir
   def print(), do: Enum.map generate_list(), &IO.puts/1
@@ -960,6 +1060,12 @@ Randomized with seed 474353
 パイプ演算子
 
 ```elixir
+  def print(), do: Enum.map generate_list(), &IO.puts/1
+
+  def generate_list(), do: Enum.map 1..100, &generate/1
+```
+
+```elixir
   def print(), do: generate_list() |> Enum.map &IO.puts/1
 
   def generate_list(), do: 1..100 |> Enum.map &generate/1
@@ -969,7 +1075,13 @@ Randomized with seed 474353
 
 ### Extract Parameter
 
-任意の範囲でリストを生成しよう
+任意の範囲でリストを生成しよう
+
+```elixir
+  def print(), do: generate_list() |> Enum.map &IO.puts/1
+
+  def generate_list(), do: 1..100 |> Enum.map &generate/1
+```
 
 ```elixir
   def print(), do: generate_list(100) |> Enum.map &IO.puts/1
@@ -984,6 +1096,12 @@ Randomized with seed 474353
 マジックナンバー良くない
 
 ```elixir
+  def print(), do: generate_list(100) |> Enum.map &IO.puts/1
+
+  def generate_list(max_range), do: 1..max_range |> Enum.map &generate/1
+```
+
+```elixir
   @max_range 100
 
   def print(), do: generate_list(@max_range) |> Enum.map &IO.puts/1
@@ -995,7 +1113,20 @@ Randomized with seed 474353
 
 ### Extract Variable
 
-次は`generate`関数、まずは判定してる意味を明確にしよう
+次は`generate`関数
+
+まずは判定してる意味を明確にする
+
+```elixir
+  def generate(number) do
+    cond do
+      rem(number, 3) == 0 and rem(number, 5) == 0 -> "FizzBuzz"
+      rem(number, 3) == 0 -> "Fizz"
+      rem(number, 5) == 0 -> "Buzz"
+      true -> number
+    end
+  end
+```
 
 ```elixir
   def generate(number) do
@@ -1018,6 +1149,20 @@ Randomized with seed 474353
 問い合わせ関数を抽出して
 
 ```elixir
+  def generate(number) do
+    fizz = rem(number, 3) == 0
+    buzz = rem(number, 5) == 0
+
+    cond do
+      fizz and buzz -> "FizzBuzz"
+      fizz -> "Fizz"
+      buzz -> "Buzz"
+      true -> number
+    end
+  end
+```
+
+```elixir
  def generate(number) do
     fizz = _fizz?(number)
     buzz = _buzz?(number)
@@ -1038,7 +1183,24 @@ Randomized with seed 474353
 
 ### Replace Temp with Query
 
-一時変数はインライン化して出来上がり
+一時変数をインライン化したら出来上がり
+
+```elixir
+ def generate(number) do
+    fizz = _fizz?(number)
+    buzz = _buzz?(number)
+
+    cond do
+      fizz and buzz -> "FizzBuzz"
+      fizz -> "Fizz"
+      buzz -> "Buzz"
+      true -> number
+    end
+  end
+
+  defp _fizz?(number), do: rem(number, 3) == 0
+  defp _buzz?(number), do: rem(number, 5) == 0
+```
 
 ```elixir
   def generate(number) do
@@ -1058,7 +1220,21 @@ Randomized with seed 474353
 
 ### Substitue Argolrith
 
-Elxirの`case`を試してみる
+Elixir の`case`を試してみる
+
+```elixir
+  def generate(number) do
+    cond do
+      _fizz?(number) and _buzz?(number) -> "FizzBuzz"
+      _fizz?(number) -> "Fizz"
+      _buzz?(number) -> "Buzz"
+      true -> number
+    end
+  end
+
+  defp _fizz?(number), do: rem(number, 3) == 0
+  defp _buzz?(number), do: rem(number, 5) == 0
+```
 
 ```elixir
   def generate(number) do
@@ -1078,7 +1254,21 @@ Elxirの`case`を試してみる
 
 ### Replace Nested Conditional with Guard Clauses
 
-ガード節
+ガード節に変更
+
+```elixir
+  def generate(number) do
+    case {_fizz?(number), _buzz?(number)} do
+      {0, 0} -> "FizzBuzz"
+      {0, _} -> "Fizz"
+      {_, 0} -> "Buzz"
+      {_, _} -> number
+    end
+  end
+
+  defp _fizz?(number), do: rem(number, 3)
+  defp _buzz?(number), do: rem(number, 5)
+```
 
 ```elixir
   def generate(number) when rem(number, 3) == 0 and rem(number, 5) == 0, do: "FizzBuzz"
@@ -1090,6 +1280,15 @@ Elxirの`case`を試してみる
 ---
 
 ### Replace Magic Number with Symbolic Constant
+
+マジックナンバーじゃないけど
+
+```elixir
+  def generate(number) when rem(number, 3) == 0 and rem(number, 5) == 0, do: "FizzBuzz"
+  def generate(number) when rem(number, 3) == 0 , do: "Fizz"
+  def generate(number) when rem(number, 5) == 0 , do: "Buzz"
+  def generate(number), do: number
+```
 
 ```elixir
   @fizz_buzz "FizzBuzz"
@@ -1107,12 +1306,12 @@ end
 
 ### Extract Module
 
-モジュール化による再利用
+仕上げはモジュール化
 
 ```elixir
 defmodule TddElixir.FizzBuzz do
-  @max_range 100
   @moduledoc false
+  @max_range 100
   def print, do: generate_list(@max_range) |> Enum.map(&IO.puts/1)
   def generate_list(max_range), do: 1..max_range |> Enum.map(&generate/1)
 
@@ -1270,6 +1469,27 @@ class FizzBuzz:
 
 ---
 
+### Refactored Elixir
+
+```elixir
+defmodule TddElixir.FizzBuzz do
+  @moduledoc false
+  @max_range 100
+  def print, do: generate_list(@max_range) |> Enum.map(&IO.puts/1)
+  def generate_list(max_range), do: 1..max_range |> Enum.map(&generate/1)
+
+  @fizz_buzz "FizzBuzz"
+  @fizz "Fizz"
+  @buzz "Buzz"
+  def generate(number) when rem(number, 3) == 0 and rem(number, 5) == 0, do: @fizz_buzz
+  def generate(number) when rem(number, 3) == 0, do: @fizz
+  def generate(number) when rem(number, 5) == 0, do: @buzz
+  def generate(number), do: number
+end
+```
+
+---
+
 - Elixir(関数型言語？)だとよりコンパクト
 - 関数型の流儀に従うとリファクタリングされたコードになりやすい
 - パイプ演算子は(・∀・)ｲｲ!!
@@ -1280,8 +1500,8 @@ class FizzBuzz:
 
 - Elixir では、等号（＝）は代入ではない。
 - Elixir のリストは連結リスト。
-- Elixir に for 文はない、代わりに再帰ループ処理を使う。
-- Elixir には、ほんの少しの制御構文しかない。if, unless, cond, case,それから raise だ。
+- Elixir に for 文はない、代わりに再帰ループ処理。
+- Elixir には、ほんの少しの制御構文しかない。if, unless, cond, case,それから raise。
 - Elixir は名前付き関数を呼ぶ時、はじめの定義（節）のパラメータリストにマッチさせようとする。
 
 ---
@@ -1296,9 +1516,9 @@ class FizzBuzz:
 
 ### Elixir も楽し(・∀・)ｲｲ!!
 
-<img src="https://d2dcan0armyq93.cloudfront.net/photo/odai/600/40224305201b1ae5379640064e694995_600.jpg" width="400x400">
+<img src="https://d2dcan0armyq93.cloudfront.net/photo/odai/600/40224305201b1ae5379640064e694995_600.jpg" width="600x600">
 
-一緒に Elixir をキメようぜ！
+みんなも Elixir をキメようぜ！
 
 ---
 
@@ -1308,7 +1528,7 @@ class FizzBuzz:
 
 ### 参照
 
-- [テスト駆動開発から始める Elixir 入門](https://github.com/k2works/tdd_elixir)
+- [サンプルコード](https://github.com/k2works/tdd_elixir)
 - [テスト駆動開発](https://www.amazon.co.jp/%E3%83%86%E3%82%B9%E3%83%88%E9%A7%86%E5%8B%95%E9%96%8B%E7%99%BA-Kent-Beck/dp/4274217884/ref=tmm_pap_swatch_0?_encoding=UTF8&qid=&sr=)
 - [Refactoring: Improving the Design of Existing Code (2nd Edition)](https://www.amazon.co.jp/Refactoring-Improving-Existing-Addison-Wesley-Signature/dp/0134757599/ref=pd_sbs_14_1/357-0788753-0519007?_encoding=UTF8&pd_rd_i=0134757599&pd_rd_r=531da6c3-3670-11e9-8479-6b76599af025&pd_rd_w=IozYn&pd_rd_wg=yCXVP&pf_rd_p=ad2ea29d-ea11-483c-9db2-6b5875bb9b73&pf_rd_r=T7JA13SSRSYEJJNQAT6D&psc=1&refRID=T7JA13SSRSYEJJNQAT6D)
 - [新装版 リファクタリング―既存のコードを安全に改善する― (OBJECT TECHNOLOGY SERIES)](https://www.amazon.co.jp/%E3%83%AA%E3%83%95%E3%82%A1%E3%82%AF%E3%82%BF%E3%83%AA%E3%83%B3%E3%82%B0%E2%80%95%E6%97%A2%E5%AD%98%E3%81%AE%E3%82%B3%E3%83%BC%E3%83%89%E3%82%92%E5%AE%89%E5%85%A8%E3%81%AB%E6%94%B9%E5%96%84%E3%81%99%E3%82%8B%E2%80%95-OBJECT-TECHNOLOGY-Martin-Fowler/dp/427405019X/ref=tmm_pap_swatch_0?_encoding=UTF8&qid=&sr=)
