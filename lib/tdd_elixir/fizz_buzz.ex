@@ -2,7 +2,7 @@ defmodule FizzBuzz do
   @moduledoc false
   def print do
     list = generate_list()
-    Enum.map list, fn (value) -> IO.puts(value) end
+    Enum.map(list, fn value -> IO.puts(value) end)
   end
 
   def generate_list(), do: _downto(100, [])
