@@ -1,18 +1,20 @@
 defmodule TddElixir do
+  import TddElixir.FizzBuzz, only: [print: 0]
+
   @moduledoc """
   Documentation for TddElixir.
   """
 
   @doc """
-  Hello world.
+  FizzBuzz
 
   ## Examples
 
-      iex> TddElixir.hello()
-      :world
+      iex> TddElixir.fizz_buzz_print()
+      TddElixir.FizzBuzz.print()
 
   """
-  def hello do
-    :world
+  def fizz_buzz_print do
+    print()
   end
 end
