@@ -10,5 +10,8 @@ defmodule TddElixir.FizzBuzz do
   def generate(number) when rem(number, 3) == 0 and rem(number, 5) == 0, do: @fizz_buzz
   def generate(number) when rem(number, 3) == 0, do: @fizz
   def generate(number) when rem(number, 5) == 0, do: @buzz
-  def generate(number), do: number
+  def generate(number) do
+    unless is_number(number), do: raise RuntimeError, message: "数字以外は処理できません"
+    number
+  end
 end
