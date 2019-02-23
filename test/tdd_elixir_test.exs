@@ -1,4 +1,6 @@
 defmodule TddElixirTest do
+  @moduledoc false
+
   use ExUnit.Case
   doctest TddElixir
 
