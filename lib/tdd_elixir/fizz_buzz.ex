@@ -9,8 +9,9 @@ defmodule FizzBuzz do
   end
 
   def print(current, result) do
-    IO.puts(current)
-    print(current - 1, [current | result])
+    value = generate(current)
+    IO.puts(value)
+    print(current - 1, [value | result])
   end
 
   def generate(number) do
