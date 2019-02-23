@@ -27,7 +27,7 @@ defmodule TddElixir.MixProject do
       {:mix_test_watch, "~> 0.8", only: :dev, runtime: false},
       {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.19"},
-      {:earmark, "~> 1.3"},
+      {:earmark, "~> 1.3"}
     ]
   end
 end

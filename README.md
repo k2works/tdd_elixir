@@ -12,7 +12,7 @@
 
 ### 開発
 
-テストとリンターの自動実行
+テストとリンターとフォーマットの自動実行
 
 ```
 $ mix test.watch
@@ -25,3 +25,4 @@ $ mix test.watch
 - [FizzBuzz in Elixir](https://sublimecoding.com/fizzbuzz-in-elixir/)
 - [mix test.watch](https://github.com/lpil/mix-test.watch)
 - [Credo](https://github.com/rrrene/credo)
+- [Elixir 1.6のcode formatterで自動フォーマット](https://qiita.com/shufo/items/f5e3ccd4892288449ff9)
