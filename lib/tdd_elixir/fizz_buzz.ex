@@ -5,10 +5,13 @@ defmodule FizzBuzz do
   def generate_list(max_range), do: 1..max_range |> Enum.map(&generate/1)
 
   def generate(number) do
+    fizz = rem(number, 3) == 0
+    buzz = rem(number, 5) == 0
+
     cond do
-      rem(number, 3) == 0 and rem(number, 5) == 0 -> "FizzBuzz"
-      rem(number, 3) == 0 -> "Fizz"
-      rem(number, 5) == 0 -> "Buzz"
+      fizz and buzz -> "FizzBuzz"
+      fizz -> "Fizz"
+      buzz -> "Buzz"
       true -> number
     end
   end
