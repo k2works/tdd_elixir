@@ -1,14 +1,7 @@
 defmodule FizzBuzz do
   @moduledoc false
-  def print do
-    list = generate_list()
-    Enum.map(list, fn value -> IO.puts(value) end)
-  end
-
-  def generate_list() do
-    range = 1..100
-    Enum.map(range, fn number -> generate(number) end)
-  end
+  def print, do: Enum.map(generate_list(), fn value -> IO.puts(value) end)
+  def generate_list(), do: Enum.map(1..100, fn number -> generate(number) end)
 
   def generate(number) do
     cond do
