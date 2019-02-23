@@ -33,6 +33,12 @@ iex -S mix
 iex(2)> TddElixir.fizz_buzz_print
 ```
 
+静的型チェックの実行
+
+```bash
+mix dialyzer
+```
+
 ## 参照
 
 - [elixir](https://elixir-lang.org/)
@@ -41,3 +47,4 @@ iex(2)> TddElixir.fizz_buzz_print
 - [mix test.watch](https://github.com/lpil/mix-test.watch)
 - [Credo](https://github.com/rrrene/credo)
 - [Elixir 1.6 の code formatter で自動フォーマット](https://qiita.com/shufo/items/f5e3ccd4892288449ff9)
+- [静的型チェックツールDialyzerをElixirから使う](https://qiita.com/niku/items/826f3c39c2b8bd99eb5a)
