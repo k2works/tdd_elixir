@@ -1332,7 +1332,6 @@ Elixir の`case`を試してみる
   def generate(number) when rem(number, 3) == 0 , do: @fizz
   def generate(number) when rem(number, 5) == 0 , do: @buzz
   def generate(number), do: number
-end
 ```
 
 ---
