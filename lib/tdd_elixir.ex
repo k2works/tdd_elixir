@@ -1,5 +1,4 @@
 defmodule TddElixir do
-
   import TddElixir.FizzBuzz, only: [print: 0]
 
   @moduledoc """
