@@ -1,12 +1,12 @@
 defmodule FizzBuzz do
   @moduledoc false
-  def print, do: downto(100, [])
-  def downto(0, result), do: result
+  def print, do: _downto(100, [])
+  defp _downto(0, result), do: result
 
-  def downto(current, result) do
+  defp _downto(current, result) do
     value = generate(current)
     IO.puts(value)
-    downto(current - 1, [value | result])
+    _downto(current - 1, [value | result])
   end
 
   def generate(number) do
