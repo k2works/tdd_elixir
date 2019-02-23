@@ -14,10 +14,10 @@ defmodule FizzBuzz do
   end
 
   def generate(number) do
-    if rem(number, 3) == 0 do
-      "Fizz"
-    else
-      number
+    cond do
+      rem(number, 3) == 0 -> "Fizz"
+      rem(number, 5) == 0 -> "Buzz"
+      true -> number
     end
   end
 end
