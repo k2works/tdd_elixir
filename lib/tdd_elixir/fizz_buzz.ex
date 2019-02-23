@@ -1,6 +1,15 @@
 defmodule FizzBuzz do
   @moduledoc false
   def print do
-    IO.puts(1)
+    print(100, [])
+  end
+
+  def print(0, result) do
+    result
+  end
+
+  def print(current, result) do
+    IO.puts(current)
+    print(current - 1, [current | result])
   end
 end
